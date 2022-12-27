@@ -1,0 +1,19 @@
+{
+  "name": "ex31",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dosacat/FS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dosacat/FS/issues"
+  },
+  "homepage": "https://github.com/dosacat/FS#readme"
+}
