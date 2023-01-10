@@ -23,6 +23,15 @@ const phonebook = [
 
 const express = require('express');
 const app = express();
+var morgan = require('morgan')
+
+
+
+//Middleware
+app.use(express.json())
+app.use(morgan("tiny"))
+morgan.token('namee', function (req, res) { return JSON.stringify(req.body) })
+app.use(morgan(':namee'))
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -33,7 +42,9 @@ app.get("/api/persons",(req,res)=>{
 })
 
 app.post("/api/persons",(req,res)=>{
+  const note = req.body
   res.status(200).end()
+  
 })
 
 
