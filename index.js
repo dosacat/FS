@@ -1,4 +1,4 @@
-const phonebook = [
+var phonebook = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -16,7 +16,7 @@ const phonebook = [
     },
     { 
       "id": 4,
-      "name": "Mary Poppendieck", 
+      "name": "Mary Pooppoo", 
       "number": "39-23-6423122"
     }
 ]
@@ -25,13 +25,15 @@ const express = require('express');
 const app = express();
 var morgan = require('morgan')
 
+const cors = require('cors')
+app.use(cors())
+
 
 
 //Middleware
 app.use(express.json())
 app.use(morgan("tiny"))
-morgan.token('namee', function (req, res) { return JSON.stringify(req.body) })
-app.use(morgan(':namee'))
+
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -40,13 +42,6 @@ app.get('/', (req, res) => {
 app.get("/api/persons",(req,res)=>{
   res.json(phonebook)
 })
-
-app.post("/api/persons",(req,res)=>{
-  const note = req.body
-  res.status(200).end()
-  
-})
-
 
 app.get("/info",(req,res)=>{
   const total=phonebook.length
@@ -67,10 +62,42 @@ app.get("/api/persons/:id",(req,res)=>{
   
 })
 
+
 app.delete("/api/persons/:id",(req,res)=>{
   const id = Number(req.params.id)
-  phonesbook= phonebook.filter(elem=>elem.id===id)
-  response.status(204).end()
+  phonebook= phonebook.filter(elem=>elem.id!==id)
+  res.status(204).end()
+  
+})
+
+app.put("/api/persons/:id",(req,res)=>{
+  const id = Number(req.params.id)
+  phonebook= phonebook.map(elem=>{
+    if(elem.id===id){
+      return {...elem, number:req.body.number}
+    }
+    else{
+      return {...elem}
+    }
+  })
+
+  res.status(204).end()
+  
+})
+
+morgan.token('namee', function (req, res) { return JSON.stringify(req.body) })
+app.use(morgan(':namee'))
+
+
+app.post("/api/persons",(req,res)=>{
+  var note = req.body
+  if(phonebook.find(contact=>contact.name===note.name)){
+    res.json("error:name must be unique")
+  }
+  else{
+    phonebook = phonebook.concat(note)
+    res.status(200).end()    
+  }
   
 })
 
